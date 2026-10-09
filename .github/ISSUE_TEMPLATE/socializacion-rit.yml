@@ -1,0 +1,169 @@
+name: "Socialización RIT 2026"
+description: "Constancia de socialización y evaluación del Reglamento Interno de Trabajo 2026 de Fractal Estrategias Sostenibles S.A.S."
+title: "[RIT 2026] Constancia - "
+labels: ["socializacion-rit"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Reglamento Interno de Trabajo 2026
+        Lo que todos en Fractal debemos conocer para trabajar con claridad, respeto y confianza.
+        Completa tus datos, responde la evaluación y confirma que conoces el RIT.
+        > Escribe tu nombre al final del título. No incluyas números de documento ni datos sensibles.
+  - type: input
+    id: nombre
+    attributes:
+      label: Nombre completo
+    validations:
+      required: true
+  - type: input
+    id: cargo
+    attributes:
+      label: Cargo y área
+    validations:
+      required: true
+  - type: dropdown
+    id: modalidad
+    attributes:
+      label: Modalidad de trabajo
+      options:
+        - Presencial en sede
+        - En clientes / campo
+        - Trabajo no presencial
+        - Mixta
+    validations:
+      required: true
+  - type: input
+    id: fecha
+    attributes:
+      label: Fecha de la socialización
+      placeholder: AAAA-MM-DD
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: "## Evaluación"
+  - type: dropdown
+    id: p1
+    attributes:
+      label: "1. ¿Cuál es actualmente la jornada máxima legal semanal?"
+      options:
+        - "48 horas semanales"
+        - "42 horas semanales"
+        - "40 horas semanales"
+        - "45 horas semanales"
+    validations:
+      required: true
+  - type: dropdown
+    id: p2
+    attributes:
+      label: "2. ¿Qué se requiere para realizar horas extra?"
+      options:
+        - "Nada, basta con trabajarlas"
+        - "Avisar al día siguiente"
+        - "Autorización previa"
+        - "Que el cliente las solicite"
+    validations:
+      required: true
+  - type: dropdown
+    id: p3
+    attributes:
+      label: "3. ¿En qué horario se considera trabajo nocturno?"
+      options:
+        - "De 9:00 p. m. a 6:00 a. m."
+        - "De 7:00 p. m. a 6:00 a. m."
+        - "De 10:00 p. m. a 5:00 a. m."
+        - "De 6:00 p. m. a 6:00 a. m."
+    validations:
+      required: true
+  - type: dropdown
+    id: p4
+    attributes:
+      label: "4. ¿Cuántos días de vacaciones corresponden por cada año de servicio?"
+      options:
+        - "15 días calendario"
+        - "15 días hábiles consecutivos"
+        - "20 días hábiles"
+        - "10 días hábiles"
+    validations:
+      required: true
+  - type: dropdown
+    id: p5
+    attributes:
+      label: "5. Sobre la información médica ocupacional, Fractal recibe:"
+      options:
+        - "La historia clínica completa"
+        - "Solo conceptos de aptitud, restricciones y recomendaciones"
+        - "Ninguna información"
+        - "Los diagnósticos detallados"
+    validations:
+      required: true
+  - type: dropdown
+    id: p6
+    attributes:
+      label: "6. ¿Se puede cargar información confidencial en una herramienta de IA pública o no autorizada?"
+      options:
+        - "Sí, si ahorra tiempo"
+        - "Sí, si se borra después"
+        - "No"
+        - "Solo si es de un cliente"
+    validations:
+      required: true
+  - type: dropdown
+    id: p7
+    attributes:
+      label: "7. Un resultado generado con IA o automatización:"
+      options:
+        - "Puede entregarse directamente"
+        - "Debe ser revisado por una persona antes de usarlo o entregarlo"
+        - "Solo lo revisa el cliente"
+        - "No puede usarse nunca"
+    validations:
+      required: true
+  - type: dropdown
+    id: p8
+    attributes:
+      label: "8. ¿Cuándo se debe informar una relación sentimental en el trabajo?"
+      options:
+        - "Siempre, en todos los casos"
+        - "Nunca"
+        - "Cuando hay subordinación, influencia en decisiones o riesgo de favorecimiento"
+        - "Solo si es con un cliente"
+    validations:
+      required: true
+  - type: dropdown
+    id: p9
+    attributes:
+      label: "9. Para reportar de forma confidencial temas de ética, fraude o conflictos de interés, el canal indicado es:"
+      options:
+        - "Redes sociales"
+        - "La Línea de Transparencia"
+        - "Un compañero de equipo"
+        - "El cliente"
+    validations:
+      required: true
+  - type: dropdown
+    id: p10
+    attributes:
+      label: "10. Una conversación de desempeño o instrucción correctiva:"
+      options:
+        - "Es siempre una sanción"
+        - "Genera antecedente disciplinario automático"
+        - "No es automáticamente un antecedente disciplinario"
+        - "Implica despido"
+    validations:
+      required: true
+  - type: textarea
+    id: dudas
+    attributes:
+      label: Preguntas o casos prácticos
+      description: Dudas que quieras aclarar con Gestión Humana.
+  - type: checkboxes
+    id: constancia
+    attributes:
+      label: Constancia
+      options:
+        - label: Asistí a la socialización y conozco los principales deberes y garantías del RIT 2026.
+          required: true
+        - label: Entiendo que esta presentación es un resumen y que prevalece el texto completo del RIT y la legislación aplicable.
+          required: true

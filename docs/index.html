@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Socialización RIT 2026</title>
+<style>
+  :root { --bg:#f6f7f4; --card:#fff; --ink:#1d2a24; --muted:#5b6b63; --accent:#2f6b4f; --accent-ink:#fff; --line:#dfe4df; --ok:#2f6b4f; --bad:#b3412f; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#121815; --card:#1a221e; --ink:#e7eee9; --muted:#9fb0a6; --accent:#5fb48a; --accent-ink:#0d1411; --line:#2c3832; --ok:#5fb48a; --bad:#e2735f; } }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width:760px; margin:0 auto; padding:32px 16px 64px; }
+  header p { color:var(--muted); margin:4px 0 0; }
+  h1 { margin:0; font-size:1.8rem; }
+  .kicker { text-transform:uppercase; letter-spacing:.08em; font-size:.75rem; color:var(--accent); font-weight:600; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:20px; margin-top:20px; }
+  h2 { margin:0 0 12px; font-size:1.15rem; }
+  label { display:block; font-weight:600; margin:14px 0 6px; }
+  input[type=text], input[type=date], select, textarea { width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; background:var(--bg); color:var(--ink); font:inherit; }
+  textarea { min-height:90px; }
+  fieldset { border:0; padding:0; margin:0 0 18px; }
+  legend { font-weight:600; margin-bottom:6px; }
+  .opt { display:flex; gap:8px; align-items:flex-start; font-weight:400; margin:6px 0; }
+  .opt input { margin-top:4px; }
+  .fb { font-size:.9rem; margin-top:4px; }
+  .fb.ok { color:var(--ok); } .fb.bad { color:var(--bad); }
+  button { margin-top:20px; width:100%; padding:14px; border:0; border-radius:10px; background:var(--accent); color:var(--accent-ink); font:600 1rem system-ui, sans-serif; cursor:pointer; }
+  #result { display:none; }
+  .note { color:var(--muted); font-size:.9rem; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div class="kicker">Fractal Estrategias Sostenibles · Socialización RIT 2026</div>
+    <h1>Reglamento Interno de Trabajo 2026</h1>
+    <p>Constancia de socialización y evaluación. Tus respuestas se registran como un issue en GitHub.</p>
+  </header>
+
+  <form id="form">
+    <section>
+      <h2>Tus datos</h2>
+      <label for="nombre">Nombre completo</label>
+      <input type="text" id="nombre" required>
+      <label for="cargo">Cargo y área</label>
+      <input type="text" id="cargo" required>
+      <label for="modalidad">Modalidad de trabajo</label>
+      <select id="modalidad" required>
+        <option value="">Selecciona…</option>
+        <option>Presencial en sede</option><option>En clientes / campo</option>
+        <option>Trabajo no presencial</option><option>Mixta</option>
+      </select>
+      <label for="fecha">Fecha de la socialización</label>
+      <input type="date" id="fecha" required>
+      <p class="note">No incluyas números de documento ni datos sensibles.</p>
+    </section>
+
+    <section>
+      <h2>Evaluación</h2>
+      <div id="quiz">Cargando preguntas…</div>
+    </section>
+
+    <section>
+      <h2>Preguntas o casos prácticos</h2>
+      <textarea id="dudas" placeholder="Dudas que quieras aclarar con Gestión Humana (opcional)"></textarea>
+      <h2 style="margin-top:20px">Constancia</h2>
+      <label class="opt"><input type="checkbox" id="c1" required> Asistí a la socialización y conozco los principales deberes y garantías del RIT 2026.</label>
+      <label class="opt"><input type="checkbox" id="c2" required> Entiendo que esta presentación es un resumen y que prevalece el texto completo del RIT y la legislación aplicable.</label>
+    </section>
+
+    <section id="result"></section>
+    <button type="submit" id="submit">Calificar y enviar a GitHub</button>
+    <p class="note">Al enviar se abrirá GitHub con tus respuestas listas; solo debes pulsar <b>Submit new issue</b>. Necesitas una cuenta de GitHub.</p>
+  </form>
+</main>
+<script>
+  const REPO = 'DavidsmSilva/Katthe-APP';
+  let quiz = [];
+
+  fetch('quiz.json').then(r => r.json()).then(data => {
+    quiz = data;
+    document.getElementById('quiz').innerHTML = quiz.map(q => `
+      <fieldset>
+        <legend>${q.pregunta}</legend>
+        ${q.opciones.map(o => `<label class="opt"><input type="radio" name="${q.id}" value="${o}" required> ${o}</label>`).join('')}
+        <div class="fb" id="fb-${q.id}"></div>
+      </fieldset>`).join('');
+  });
+
+  document.getElementById('form').addEventListener('submit', e => {
+    e.preventDefault();
+    const val = id => document.getElementById(id).value.trim();
+    let correct = 0;
+    const answers = quiz.map(q => {
+      const given = document.querySelector(`input[name="${q.id}"]:checked`).value;
+      const ok = given === q.correcta;
+      if (ok) correct++;
+      const fb = document.getElementById('fb-' + q.id);
+      fb.className = 'fb ' + (ok ? 'ok' : 'bad');
+      fb.textContent = ok ? 'Correcto' : `Correcta: ${q.correcta} (${q.ref})`;
+      return [q.pregunta, given];
+    });
+    const pct = Math.round(correct / quiz.length * 100);
+
+    const sections = [
+      ['Nombre completo', val('nombre')],
+      ['Cargo y área', val('cargo')],
+      ['Modalidad de trabajo', val('modalidad')],
+      ['Fecha de la socialización', val('fecha')],
+      ...answers,
+      ['Preguntas o casos prácticos', val('dudas') || '_No response_'],
+      ['Constancia', '- [X] Asistí a la socialización y conozco los principales deberes y garantías del RIT 2026.\n- [X] Entiendo que esta presentación es un resumen y que prevalece el texto completo del RIT y la legislación aplicable.'],
+    ];
+    const body = sections.map(([k, v]) => `### ${k}\n\n${v}`).join('\n\n');
+    const title = `[RIT 2026] Constancia - ${val('nombre')}`;
+    const url = `https://github.com/${REPO}/issues/new?` +
+      new URLSearchParams({ title, body, labels: 'socializacion-rit' }).toString();
+
+    const res = document.getElementById('result');
+    res.style.display = 'block';
+    res.innerHTML = `<h2>Resultado: ${correct}/${quiz.length} (${pct}%)</h2>
+      <p>${pct >= 70 ? 'Aprobado. ¡Gracias!' : 'Revisa las respuestas marcadas; puedes corregirlas antes de enviar.'}</p>
+      <p><a href="${url}" target="_blank" rel="noopener">Abrir GitHub para registrar la constancia →</a></p>`;
+    window.open(url, '_blank', 'noopener');
+  });
+</script>
+</body>
+</html>
